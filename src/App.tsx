@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./App.css";
 
 import { gear, check, alarm } from "./assets";
@@ -15,11 +15,25 @@ function App() {
   const [isEditing, setIsEditing] = useState(false);
   const [initialTimer, setInitialTimer] = useState<Timer>(initialValues);
   const [timer, setTimer] = useState<Timer>(initialValues);
+  const [progress, setProgress] = useState<number>(1596);
+  let timerRef = useRef<number | null>(null);
 
-  const timerInterval: NodeJS.Timer | null = null;
+  useEffect(() => {
+    if (isRunning) {
+      document.title = `Pomodoro Timer | ${padNumber(timer.minutes)}:${padNumber(timer.seconds)}`;
+    }
+
+    return () => {
+      document.title = "Pomodoro Timer";
+      // if (timerRef.current !== null) {
+      //   window.clearInterval(timerRef.current);
+      // }
+    };
+  }, [isRunning]);
 
   const changeSettings = () => {
     setIsEditing(!isEditing);
+    stopTimer();
   };
 
   const padNumber = (number: number): string | number => {
@@ -37,18 +51,18 @@ function App() {
     }
   };
 
-  const tikTackToe = () => {
-    // 1596 = 100%
-    // 70s = 100%
-    // 1596 / 70 = 22,8 ~ 23
-    // oneTik = 23
+  const tikTackToe = (totalSeconds: number) => {
+    const tick = 1596 / totalSeconds;
+    return tick;
   };
 
   const startTimer = () => {
+    console.log("startTimer");
     setIsRunning(true);
     const totalSeconds = timer.minutes * 60 + timer.seconds;
     const startTime = +new Date();
-    const timerInterval = setInterval(() => {
+    timerRef.current = window.setInterval(() => {
+      setProgress((prev) => prev - tikTackToe(totalSeconds));
       const currentTime = +new Date();
       const diff = currentTime - startTime;
       const secondsLeft = totalSeconds - Math.floor(diff / 1000);
@@ -56,21 +70,27 @@ function App() {
       setTimer({ minutes: minutesLeft, seconds: secondsLeft % 60 });
       if (secondsLeft <= 0) {
         finishTimer();
-        clearInterval(timerInterval);
       }
     }, 1000);
   };
 
+  const stopCountdown = () => {
+    if (timerRef.current) {
+      window.clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+  };
+
   const stopTimer = () => {
     setIsRunning(false);
-    // clearInterval(timerInterval);
+    stopCountdown();
   };
 
   const finishTimer = () => {
     setIsRunning(false);
+    stopCountdown();
     new Audio(alarm).play();
     setTimer(initialTimer);
-    // clearInterval(timerInterval);
   };
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -96,7 +116,7 @@ function App() {
               r="254"
               strokeLinecap="round"
               strokeDasharray="1596"
-              strokeDashoffset="100"
+              strokeDashoffset={progress}
             />
           </svg>
         </div>
