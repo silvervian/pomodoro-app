@@ -34,7 +34,7 @@ const SettingsContext = createContext<ISettingsContext>({
   settings: defaultSettings,
   updateSettings: () => {},
 });
-
+console.log("test");
 const SettingsProvider = ({ children }: SettingsProviderProps) => {
   const [settings, setSettings] = useState<Settings>(defaultSettings);
 
