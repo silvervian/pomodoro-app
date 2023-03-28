@@ -1,40 +1,52 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useSettings } from "../context/settings";
 import { DisplayTime } from "./../components/DisplayTime";
 import { SettingsButton } from "./../components/SettingsButton";
 import { ToggleButton } from "./../components/ToggleButton";
+import { alarm } from "./../assets";
 
 export const Timer = () => {
   const { settings, updateSettings } = useSettings();
   const [seconds, setSeconds] = useState<number>(0);
+  const intervalRef = useRef<number>();
 
+  const defaultTime = settings[settings.activeMode] * 60;
   const { isPaused, activeMode } = settings;
 
-  // const actualMode = settings.activeMode;
-  // console.log(actualMode);
-  // let seconds = settings[actualMode] * 60;
-  console.log(seconds);
+  const playSound = () => {
+    const audio = new Audio(alarm);
+    audio.play();
+  };
+
+  // const calculateTimeLeft = () => {
+  //   defaultTime;
+  // };
 
   useEffect(() => {
-    if (settings[settings.activeMode]) {
-      setSeconds(settings[settings.activeMode] * 60);
+    if (activeMode) {
+      setSeconds(defaultTime);
     }
-  }, [settings]);
+  }, [activeMode, defaultTime]);
 
   useEffect(() => {
-    let interval: number;
+    console.log(seconds);
     if (!isPaused) {
-      interval = window.setInterval(() => {
-        setSeconds(seconds - 1);
-        if (seconds < 0) {
-          window.clearInterval(interval);
-        }
+      intervalRef.current = window.setInterval(() => {
+        setSeconds((s) => s - 1);
       }, 1000);
     }
-    return () => window.clearInterval(interval);
+    return () => window.clearInterval(intervalRef.current);
   }, [isPaused, seconds]);
+
+  useEffect(() => {
+    if (seconds <= 0) {
+      playSound();
+      updateSettings({ ...settings, isPaused: true });
+      window.clearInterval(intervalRef.current);
+    }
+  }, [seconds, updateSettings, settings]);
 
   return (
     <div className="timer">

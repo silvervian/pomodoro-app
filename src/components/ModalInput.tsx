@@ -1,11 +1,11 @@
-import { modalSettings } from "./Modal";
+// import { modalSettings } from "./Modal";
 
-interface ModalInputProps {
-  modalSettings: modalSettings;
-  setModalSettings: React.Dispatch<React.SetStateAction<modalSettings>>;
-  name: string;
-  pomodoro: number;
-}
+// interface ModalInputProps {
+//   modalSettings: modalSettings;
+//   setModalSettings: React.Dispatch<React.SetStateAction<modalSettings>>;
+//   name: string;
+//   pomodoro: number;
+// }
 
 // export const ModalInput = ({
 //   modalSettings,

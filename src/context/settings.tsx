@@ -8,7 +8,6 @@ interface Settings {
   pomodoroTime: number;
   shortBreakTime: number;
   longBreakTime: number;
-  breakInterval: number;
 }
 
 interface ISettingsContext {
@@ -27,14 +26,13 @@ const defaultSettings: Settings = {
   pomodoroTime: 25,
   shortBreakTime: 5,
   longBreakTime: 10,
-  breakInterval: 4,
 };
 
 const SettingsContext = createContext<ISettingsContext>({
   settings: defaultSettings,
   updateSettings: () => {},
 });
-console.log("test");
+
 const SettingsProvider = ({ children }: SettingsProviderProps) => {
   const [settings, setSettings] = useState<Settings>(defaultSettings);
 
