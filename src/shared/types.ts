@@ -1,3 +1,5 @@
-export type test = {
-  opcja: string;
-};
+export enum PomodoroMode {
+  pomodoro = "pomodoroTime",
+  shortBreak = "shortBreakTime",
+  longBreak = "longBreakTime",
+}
