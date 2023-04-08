@@ -122,8 +122,17 @@ body {
 }
 
 .option-btn.active {
+  transition: all 0.2s;
+}
+
+.option-btn.pomodoroTime.active {
   background-color: #f87070;
-  color: #17171a;
+}
+.option-btn.shortBreakTime.active {
+  background-color: #38858a;
+}
+.option-btn.longBreakTime.active {
+  background-color: #397097;
 }
 
 .modal-overlay {

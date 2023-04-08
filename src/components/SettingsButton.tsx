@@ -7,7 +7,7 @@ export const SettingsButton = () => {
   const { isModalOn } = settings;
 
   const toggleModal = () => {
-    updateSettings({ ...settings, isPaused: true, isModalOn: !isModalOn });
+    updateSettings({ ...settings, isActive: false, isModalOn: !isModalOn });
   };
 
   return (

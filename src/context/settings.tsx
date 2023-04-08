@@ -1,9 +1,9 @@
 import { createContext, useState, useContext } from "react";
 import { PomodoroMode } from "../shared/types";
 
-interface ISettings {
+export interface ISettings {
   isModalOn: boolean;
-  isPaused: boolean;
+  isActive: boolean;
   activeMode: PomodoroMode;
 }
 
@@ -27,7 +27,7 @@ interface SettingsProviderProps {
 
 const defaultSettings: ISettings = {
   isModalOn: false,
-  isPaused: true,
+  isActive: false,
   activeMode: PomodoroMode.pomodoro,
 };
 

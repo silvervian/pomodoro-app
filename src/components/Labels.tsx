@@ -6,7 +6,7 @@ export const Labels = () => {
   const { settings, updateSettings } = useSettings();
 
   const changeMode = (mode: PomodoroMode) => {
-    updateSettings({ ...settings, activeMode: mode });
+    updateSettings({ ...settings, activeMode: mode, isActive: false });
   };
 
   return (
@@ -14,7 +14,9 @@ export const Labels = () => {
       {controllers.map((controller) => {
         return (
           <button
-            className={`option-btn ${controller.value === settings.activeMode ? "active" : ""}`}
+            className={`option-btn ${settings.activeMode} ${
+              controller.value === settings.activeMode ? "active" : ""
+            }`}
             onClick={() => changeMode(controller.value as PomodoroMode)}
             key={controller.value}
           >
