@@ -45,9 +45,15 @@ const SettingsContext = createContext<ISettingsContext>({
   updateTimeForm: () => {},
 });
 
+const sessionDefaultTime =
+  JSON.parse(
+    localStorage.getItem("settings") ||
+      '{"pomodoroTime":25,"shortBreakTime":5,"longBreakTime":10,"longBreakInterval":4}'
+  ) || defaultTimeForm;
+
 const SettingsProvider = ({ children }: SettingsProviderProps) => {
   const [settings, setSettings] = useState<ISettings>(defaultSettings);
-  const [timeForm, setTimeForm] = useState<ITimeForm>(defaultTimeForm);
+  const [timeForm, setTimeForm] = useState<ITimeForm>(sessionDefaultTime);
 
   const updateSettings = (newSettings: ISettings) => {
     setSettings(newSettings);

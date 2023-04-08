@@ -97,7 +97,6 @@ body {
 }
 
 .labels {
-  border: 5px solid #3a393f;
   margin: 0 auto 20px;
   max-width: 350px;
   padding: 10px 0;
@@ -105,9 +104,23 @@ body {
   justify-content: center;
   align-items: center;
   background: radial-gradient(71.4% 71.4% at 51.7% 28.6%, #3a393f 0%, #17171a 100%);
-  /* box-shadow: inset 0px 0px 114px rgba(0, 0, 0, 0.45); */
+  box-shadow: inset 0px 0px 114px rgba(0, 0, 0, 0.45);
   box-shadow: -5px 14px 44px #000000, 5px -16px 50px rgba(255, 255, 255, 0.15);
   border-radius: 50px;
+  transition: all 0.3s;
+}
+
+.pomodoroTime-label {
+  border-bottom: 3px solid #f87070;
+  border-right: 3px solid #f87070;
+}
+.shortBreakTime-label {
+  border-bottom: 3px solid #38858a;
+  border-right: 3px solid #38858a;
+}
+.longBreakTime-label {
+  border-bottom: 3px solid #397097;
+  border-right: 3px solid #397097;
 }
 
 .option-btn {
@@ -122,7 +135,7 @@ body {
 }
 
 .option-btn {
-  transition: all 0.2s;
+  transition: all 0.3s;
   background-color: transparent;
 }
 

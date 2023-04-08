@@ -10,7 +10,7 @@ export const Labels = () => {
   };
 
   return (
-    <div className="labels">
+    <div className={`labels ${settings.activeMode}-label`}>
       {controllers.map((controller) => {
         return (
           <button

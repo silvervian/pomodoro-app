@@ -13,6 +13,7 @@ export const ModalInput = ({ title, name }: ModalInputProps) => {
     const { name, value } = e.target;
     const newValue = parseInt(value.substring(0, 2));
     updateTimeForm({ ...timeForm, [name]: newValue });
+    localStorage.setItem("settings", JSON.stringify({ ...timeForm, [name]: newValue }));
   };
 
   return (
