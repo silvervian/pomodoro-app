@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { SettingsProvider } from "../context/settings";
 import { Labels } from "./Labels";
 import { Modal } from "./Modal";

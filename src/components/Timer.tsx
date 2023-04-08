@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useSettings } from "../context/settings";
@@ -8,52 +8,53 @@ import { ToggleButton } from "./../components/ToggleButton";
 import { alarm } from "./../assets";
 
 export const Timer = () => {
-  const { settings, updateSettings } = useSettings();
+  const { settings, updateSettings, timeForm } = useSettings();
   const [seconds, setSeconds] = useState<number>(0);
-  const intervalRef = useRef<number>();
 
-  const defaultTime = settings[settings.activeMode] * 60;
   const { isPaused, activeMode } = settings;
+
+  const currentTimeMode = timeForm[settings.activeMode] * 60;
 
   const playSound = () => {
     const audio = new Audio(alarm);
     audio.play();
   };
 
-  // const calculateTimeLeft = () => {
-  //   defaultTime;
-  // };
+  const calculateTimeLeftInPercentage = () => {
+    return (seconds / currentTimeMode) * 100;
+  };
 
   useEffect(() => {
     if (activeMode) {
-      setSeconds(defaultTime);
+      setSeconds(currentTimeMode);
     }
-  }, [activeMode, defaultTime]);
+  }, [activeMode, currentTimeMode]);
 
   useEffect(() => {
-    console.log(seconds);
+    let interval: number;
     if (!isPaused) {
-      intervalRef.current = window.setInterval(() => {
-        setSeconds((s) => s - 1);
+      interval = window.setInterval(() => {
+        setSeconds(seconds - 1);
+        if (seconds < 1) {
+          playSound();
+          window.clearInterval(interval);
+          updateSettings({ ...settings, isPaused: true });
+          setSeconds(currentTimeMode);
+        }
       }, 1000);
     }
-    return () => window.clearInterval(intervalRef.current);
-  }, [isPaused, seconds]);
-
-  useEffect(() => {
-    if (seconds <= 0) {
-      playSound();
-      updateSettings({ ...settings, isPaused: true });
-      window.clearInterval(intervalRef.current);
-    }
-  }, [seconds, updateSettings, settings]);
+    return () => {
+      window.clearInterval(interval);
+    };
+  }, [isPaused, seconds, updateSettings, settings, currentTimeMode]);
 
   return (
     <div className="timer">
       <CircularProgressbar
         strokeWidth={2}
         counterClockwise={true}
-        value={seconds}
+        value={calculateTimeLeftInPercentage()}
+        // value={100}
         styles={buildStyles({
           trailColor: "transparent",
           pathColor: "#f87070",

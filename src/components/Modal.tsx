@@ -1,4 +1,6 @@
 import { useSettings } from "../context/settings";
+import { GrFormClose } from "react-icons/gr";
+import { ModalInput } from "./ModalInput";
 
 export const Modal = () => {
   const { settings, updateSettings } = useSettings();
@@ -7,61 +9,24 @@ export const Modal = () => {
     updateSettings({ ...settings, isModalOn: !settings.isModalOn });
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    updateSettings({ ...settings, [name]: value });
-  };
-
-  const { isModalOn, pomodoroTime, shortBreakTime, longBreakTime } = settings;
+  const { isModalOn } = settings;
 
   return (
     <>
       {isModalOn && (
-        <div className="modal-wrapper">
-          <div className="modal">
+        <div className="modal-overlay" onClick={toggleModal}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h2>Settings</h2>
               <button className="modal-close" onClick={toggleModal}>
-                X
+                <GrFormClose />
               </button>
             </div>
             <div className="modal-body">
-              <label className="label" htmlFor="pomodoroTime">
-                Pomodoro
-                <input
-                  type="number"
-                  name="pomodoroTime"
-                  value={pomodoroTime}
-                  onChange={handleInputChange}
-                  id="pomodoroTime"
-                  min="1"
-                  max="60"
-                />
-              </label>
-              <label className="label" htmlFor="short-break">
-                Short Break
-                <input
-                  type="number"
-                  name="shortBreakTime"
-                  value={shortBreakTime}
-                  onChange={handleInputChange}
-                  id="short-break"
-                  min="1"
-                  max="60"
-                />
-              </label>
-              <label className="label" htmlFor="longBreakTime">
-                Long Break
-                <input
-                  type="number"
-                  name="longBreakTime"
-                  value={longBreakTime}
-                  onChange={handleInputChange}
-                  id="longBreakTime"
-                  min="1"
-                  max="60"
-                />
-              </label>
+              <ModalInput title="Pomodoro" name="pomodoroTime" />
+              <ModalInput title="Short Break" name="shortBreakTime" />
+              <ModalInput title="Long Break" name="longBreakTime" />
+              <ModalInput title="Long Break Interval" name="longBreakInterval" />
             </div>
           </div>
         </div>

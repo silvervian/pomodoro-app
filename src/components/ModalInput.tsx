@@ -1,27 +1,32 @@
-// import { modalSettings } from "./Modal";
+import { ITimeForm } from "../context/settings";
+import { useSettings } from "../context/settings";
 
-// interface ModalInputProps {
-//   modalSettings: modalSettings;
-//   setModalSettings: React.Dispatch<React.SetStateAction<modalSettings>>;
-//   name: string;
-//   pomodoro: number;
-// }
+interface ModalInputProps {
+  title: string;
+  name: string;
+}
 
-// export const ModalInput = ({
-//   modalSettings,
-//   setModalSettings,
-//   name,
-//   pomodoro,
-// }: ModalInputProps) => {
-//   const { pomodoro, shortBreak, longBreak, intervalBreak } = modalSettings;
-//   return (
-//     <label htmlFor={pomodoro}>
-//       Pomodoro
-//       <input type="number" value={time} id={pomodoro} min="1" max="60" />
-//     </label>
-//   );
-// };
+export const ModalInput = ({ title, name }: ModalInputProps) => {
+  const { timeForm, updateTimeForm } = useSettings();
 
-export const modalInput = () => {
-  return <div></div>;
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const newValue = parseInt(value.substring(0, 2));
+    updateTimeForm({ ...timeForm, [name]: newValue });
+  };
+
+  return (
+    <label className="label" htmlFor={name}>
+      {title}
+      <input
+        type="number"
+        name={name}
+        value={timeForm[name as keyof ITimeForm]}
+        onChange={handleInputChange}
+        id={name}
+        min="1"
+        max="99"
+      />
+    </label>
+  );
 };
