@@ -121,8 +121,9 @@ body {
   cursor: pointer;
 }
 
-.option-btn.active {
+.option-btn {
   transition: all 0.2s;
+  background-color: transparent;
 }
 
 .option-btn.pomodoroTime.active {
@@ -145,8 +146,6 @@ body {
   display: grid;
   place-items: center;
   z-index: 10;
-  /* visibility: hidden; */
-  /* opacity: 0; */
 }
 
 .modal {
