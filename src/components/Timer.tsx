@@ -51,7 +51,7 @@ export const Timer = () => {
             clearInterval(intervalRef.current);
           }
         }
-      }, 100);
+      }, 1000);
     }
     return () => {
       if (intervalRef.current) {
